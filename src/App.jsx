@@ -13,6 +13,8 @@ function App() {
     phoneNumber: "",
     amount: "",
   });
+  // loading
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,10 +45,12 @@ function App() {
   const handleFlutterPayment = useFlutterwave(config);
 
   const onFinish = () => {
+    setLoading(true);
     handleFlutterPayment({
       callback: (response) => {
         console.log(response);
         closePaymentModal(); // this will close the modal programmatically
+        setLoading(false);
       },
       onClose: () => {},
     });
@@ -131,6 +135,7 @@ function App() {
             htmlType="submit"
             size="large"
             onClick={onFinish}
+            loading={loading}
           >
             Donate
           </Button>
